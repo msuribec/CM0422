@@ -11,7 +11,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import scipy.integrate as integrate
 import scipy.special as special
 
-
 def graph_simple(x, fx, approx, x0, x1):
     p1 = approx
     p2 = fx

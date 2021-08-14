@@ -5,7 +5,9 @@
 
 from sympy import *
 from sympy.parsing.sympy_parser import parse_expr
+
 from error_graphs import error_and_graphs
+from error_graphs import loglog_plot
 
 try:
     import Tkinter as tk
@@ -22,17 +24,18 @@ except ImportError:
     py3 = True
 
 
-def define_input(parsefun,f):
+def define_input(parsefun, f):
     x, n = symbols("x,n")
     if parsefun:
         fx = parse_expr(f, evaluate=False)
     else:
         fx = f
-    return x,n,fx
+    return x, n, fx
 
 
-def cosine_series(f, x0, x1, a=0, b=pi, niter=50, parsefun=False, _error=False, _graph=False, _print=False, type_error = 'math'):
-    x, n, fx = define_input(parsefun,f)
+def cosine_series(f, x0, x1, a=0, b=pi, niter=50, parsefun=True, _error=False, _graph=False, _print=False,
+                  type_error='math'):
+    x, n, fx = define_input(parsefun, f)
 
     fi0 = parse_expr('1/(sqrt(pi))', evaluate=False)
     fn = parse_expr('(sqrt(2/pi)) * cos(n*x)', evaluate=False)
@@ -54,11 +57,12 @@ def cosine_series(f, x0, x1, a=0, b=pi, niter=50, parsefun=False, _error=False, 
         if _print:
             print('iteration {}: {} \n'.format(i, N(approx)))
 
-    error_and_graphs(_error, _graph, x, fx, approx, x0, x1, a, b, type_error)
+    return error_and_graphs(_error, _graph, x, fx, approx, x0, x1, a, b, type_error)
 
 
-def sine_series(f, x0, x1, a=0, b=pi, niter=50, parsefun=False, _error=False, _graph=False, _print=False, type_error = 'math'):
-    x, n, fx = define_input(parsefun,f)
+def sine_series(f, x0, x1, a=0, b=pi, niter=50, parsefun=True, _error=False, _graph=False, _print=False,
+                type_error='math'):
+    x, n, fx = define_input(parsefun, f)
 
     fn = parse_expr('(sqrt(2/pi)) * sin(n*x)', evaluate=False)
 
@@ -76,11 +80,12 @@ def sine_series(f, x0, x1, a=0, b=pi, niter=50, parsefun=False, _error=False, _g
         if _print:
             print('iteration {}: {} \n'.format(i, N(approx)))
 
-    error_and_graphs(_error, _graph, x, fx, approx, x0, x1, a, b, type_error)
+    return error_and_graphs(_error, _graph, x, fx, approx, x0, x1, a, b, type_error)
 
 
-def fourier_series(f, x0, x1, a=-pi, b=pi, niter=50, parsefun=False, _error=False, _graph=False, _print=False, type_error = 'math'):
-    x, n, fx = define_input(parsefun,f)
+def fourier_series(f, x0, x1, a=-pi, b=pi, niter=50, parsefun=True, _error=False, _graph=False, _print=False,
+                   type_error='math'):
+    x, n, fx = define_input(parsefun, f)
 
     fi0 = parse_expr('1/(sqrt(2*pi))', evaluate=False)
     fi_impar = parse_expr('1/(sqrt(pi)) * cos(n*x)', evaluate=False)
@@ -108,13 +113,35 @@ def fourier_series(f, x0, x1, a=-pi, b=pi, niter=50, parsefun=False, _error=Fals
         if _print:
             print('iteration {}: {} \n'.format(i, approx))
 
-    error_and_graphs(_error, _graph, x, fx, approx, x0, x1, a, b, type_error)
+    return error_and_graphs(_error, _graph, x, fx, approx, x0, x1, a, b, type_error)
+
+
+
+def error_analysis(name,nums,f, x0, x1, parsefun= True, _error= True):
+    errs = []
+    for n in nums:
+        if name == 'cosine':
+            er = cosine_series(f, x0, x1, niter= n, parsefun = parsefun, _error= True)
+        elif name == 'sine':
+            er =sine_series(f, x0, x1, niter= n, parsefun = parsefun, _error= True)
+        else:
+            er = fourier_series(f, x0, x1, niter= n, parsefun = parsefun, _error= True)
+        errs.append(er)
+
+    loglog_plot(nums,errs, name)
+
+
+
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    f = 'Piecewise((-2/pi * x, ((x > 0) & (x < pi /2 ))),(2/pi * x - 1, ((x >= pi/2) & (x < pi ))))'
-    #f = 'x**2'
-    sine_series(f, -3 * pi, 3 * pi, niter=50, parsefun=True, _error=True, _print=True , _graph= True,type_error = 'math')
+    # Ejemplo 1
+    #f = 'Piecewise((-2/pi * x, ((x > 0) & (x < pi /2 ))),(2/pi * x - 1, ((x >= pi/2) & (x < pi ))))'
+    #cosine_series(f, -3 * pi, 3 * pi, niter=50, _error=True, _print=True, _graph=True, type_error='math')
+
+
+    f  = 'Piecewise((-2/pi * x, ((x > 0) & (x < pi /2 ))),(2/pi * x - 1, ((x >= pi/2) & (x < pi ))))'
+    error_analysis('sine',[2,5,10,20,40],f, -3*pi, 3*pi)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

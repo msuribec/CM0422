@@ -1,7 +1,19 @@
 from math import inf
 
-from sympy import *
+import matplotlib.pyplot as plt
+import numpy as np
 import scipy.integrate as integratesci
+from sympy import *
+
+
+def loglog_plot(ns,ers,name):
+    ns = np.array(ns)
+    ers = np.array(ers)
+    plt.loglog(ers,1/ns)
+    plt.title("Log-log plot of Ej vs 1/j for " + name + " series")
+    plt.xlabel("Ej")
+    plt.ylabel("1/j")
+    plt.show()
 
 
 def error_and_graphs(_error, _graph, x, fx, approx, x0, x1, a, b, type_error):
@@ -11,6 +23,7 @@ def error_and_graphs(_error, _graph, x, fx, approx, x0, x1, a, b, type_error):
 
     if _graph:
         graph_simple(x, fx, approx, x0, x1)
+    return the_error
 
 
 def graph_simple(x, fx, approx, x0, x1):
@@ -20,6 +33,7 @@ def graph_simple(x, fx, approx, x0, x1):
     # change the color of p2
     p[1].line_color = 'r'
     p.show()
+
 
 
 def error_calc(f, approx, a, b, type):
