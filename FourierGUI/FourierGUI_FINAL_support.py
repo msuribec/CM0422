@@ -18,22 +18,36 @@ except ImportError:
 
 try:
     import ttk
+
     py3 = False
 except ImportError:
     import tkinter.ttk as ttk
+
     py3 = True
+
 
 def set_Tk_var():
     global combobox
     combobox = tk.StringVar()
-    global tch49
-    tch49 = tk.StringVar()
+    global graphON
+    graphON = tk.StringVar()
+
+    global errorON
+    errorON = tk.StringVar()
+
+    global printON
+    printON = tk.StringVar()
+
+    global che45
+    che45 = tk.IntVar()
+
 
 def init(top, gui, *args, **kwargs):
     global w, top_level, root
     w = gui
     top_level = top
     root = top
+
 
 def destroy_window():
     # Function which closes the window.
@@ -42,7 +56,8 @@ def destroy_window():
     top_level = None
 
 
-def runMethod(choiceSeries, fEntry,x0Entry,x1Entry, iterationsEntry,Scrolledtext1):
+def runMethod(choiceSeries, fEntry, x0Entry, x1Entry, iterationsEntry, Scrolledtext1, checkError, checkGraph,
+              checkPrint):
     Scrolledtext1.delete("1.0", 'end')
     k = choiceSeries.get()
     f = fEntry.get()
@@ -50,21 +65,21 @@ def runMethod(choiceSeries, fEntry,x0Entry,x1Entry, iterationsEntry,Scrolledtext
     x1 = N(parse_expr(x1Entry.get(), evaluate=False))
 
     iter_max = int(iterationsEntry.get())
-    ops = ['Fourier sine series', 'Fourier cosine series', 'Fourier generalized series', ]
+    ops = ['Fourier sine series', 'Fourier cosine series', 'Fourier generalized series']
     if k == ops[0]:
-        FourierSeries.sine_series(Scrolledtext1,f, x0, x1, niter= iter_max, parsefun = True)
-    elif k==ops[1]:
-        FourierSeries.cosine_series(Scrolledtext1,f, x0, x1, niter= iter_max, parsefun = True)
+        FourierSeries.sine_series(Scrolledtext1, f, x0, x1, niter=iter_max, parsefun=True,
+                                  _error=checkError.get(), _graph=checkGraph.get(), _print=checkPrint.get())
+    elif k == ops[1]:
+        FourierSeries.cosine_series(Scrolledtext1, f, x0, x1, niter=iter_max, parsefun=True,
+                                    _error=checkError.get(), _graph=checkGraph.get(), _print=checkPrint.get())
     elif k == ops[2]:
-        FourierSeries.fourier_series(Scrolledtext1,f, x0, x1, niter= iter_max, parsefun = True)
+        FourierSeries.fourier_series(Scrolledtext1, f, x0, x1, niter=iter_max, parsefun=True,
+                                     _error=checkError.get(), _graph=checkGraph.get(), _print=checkPrint.get())
     else:
         Scrolledtext1.insert(tk.INSERT, "Please pick a method")
 
 
 if __name__ == '__main__':
     import FourierGUI_FINAL
+
     FourierGUI_FINAL.vp_start_gui()
-
-
-
-

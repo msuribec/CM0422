@@ -167,7 +167,11 @@ class Toplevel1:
         self.runButton.configure(text='''R U N''')
         self.runButton.bind('<ButtonRelease-1>',
                             lambda e: FourierGUI_FINAL_support.runMethod(self.choiceSeries, self.fEntry,
-                                                                    self.x0Entry, self.x1Entry, self.iterationsEntry,self.Scrolledtext1))
+                                                                    self.x0Entry, self.x1Entry, self.iterationsEntry,
+                                                                    self.Scrolledtext1,
+                                                                    check_error,
+                                                                    check_graph,
+                                                                    check_print))
 
         self.iterationsEntry = tk.Entry(top)
         self.iterationsEntry.place(relx=0.266, rely=0.375, height=24
@@ -214,15 +218,53 @@ class Toplevel1:
         self.Label4.configure(foreground="#000000")
         self.Label4.configure(text='''Graphing limits''')
 
-        #self.style.map('TCheckbutton',background=
-        #    [('selected', _bgcolor), ('active', _ana2color)])
-        #self.TCheckbutton1 = ttk.Checkbutton(top)
-        #self.TCheckbutton1.place(relx=0.266, rely=0.45, relwidth=0.15
-        #        , relheight=0.0, height=26)
-        #self.TCheckbutton1.configure(variable=FourierGUI_FINAL_support.tch49)
-        #self.TCheckbutton1.configure(takefocus="")
-        #self.TCheckbutton1.configure(text='''Parse Function''')
-        #self.TCheckbutton1.configure(cursor="fleur")
+        check_error = tk.IntVar()
+        self.checkError = tk.Checkbutton(top)
+        self.checkError.place(relx=0.266, rely=0.45, relwidth=0.15
+                              , relheight=0.0, height=26)
+        self.checkError.configure(activebackground="#ececec")
+        self.checkError.configure(activeforeground="#000000")
+        self.checkError.configure(background="gray")
+        self.checkError.configure(disabledforeground="#a3a3a3")
+        self.checkError.configure(foreground="#000000")
+        self.checkError.configure(highlightbackground="#d9d9d9")
+        self.checkError.configure(highlightcolor="black")
+        self.checkError.configure(justify='left')
+        self.checkError.configure(text='''Calculate Error''')
+        self.checkError.configure(variable=check_error)
+
+        check_graph = tk.IntVar()
+        self.checkGraph = tk.Checkbutton(top)
+        self.checkGraph.place(relx=0.266 + 0.16, rely=0.45, relwidth=0.08
+                              , relheight=0.0, height=26)
+        self.checkGraph.configure(activebackground="#ececec")
+        self.checkGraph.configure(activeforeground="#000000")
+        self.checkGraph.configure(background="gray")
+        self.checkGraph.configure(disabledforeground="#a3a3a3")
+        self.checkGraph.configure(foreground="#000000")
+        self.checkGraph.configure(highlightbackground="#d9d9d9")
+        self.checkGraph.configure(highlightcolor="black")
+        self.checkGraph.configure(justify='left')
+        self.checkGraph.configure(text='''Graph''')
+        self.checkGraph.configure(variable=check_graph)
+
+
+        check_print= tk.IntVar()
+        self.checkPrint = tk.Checkbutton(top)
+        self.checkPrint.place(relx=0.266 + 0.25, rely=0.45, relwidth=0.15
+                              , relheight=0.0, height=26)
+        self.checkPrint.configure(activebackground="#ececec")
+        self.checkPrint.configure(activeforeground="#000000")
+        self.checkPrint.configure(background="gray")
+        self.checkPrint.configure(disabledforeground="#a3a3a3")
+        self.checkPrint.configure(foreground="#000000")
+        self.checkPrint.configure(highlightbackground="#d9d9d9")
+        self.checkPrint.configure(highlightcolor="black")
+        self.checkPrint.configure(justify='left')
+        self.checkPrint.configure(text='''Print iterations''')
+        self.checkPrint.configure(variable=check_print)
+
+
 
 # The following code is added to facilitate the Scrolled widgets you specified.
 class AutoScroll(object):
